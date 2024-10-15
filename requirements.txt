@@ -1,0 +1,17 @@
+# DhanHQ Python SDK
+dhanhq
+
+# Firebase Admin SDK for Python (used to interact with Firebase in GCP)
+firebase-admin
+
+# Utility libraries
+requests           # For making HTTP requests, if needed by Dhan SDK or additional APIs
+
+# Optional for JSON handling, etc.
+simplejson         # Optional, for better JSON handling (if needed)
+
+# If using Python 3.9+ ensure typing extensions (if needed)
+typing-extensions  # To support typing improvements (optional, based on Python version)
+
+# Logging libraries (optional)
+loguru # Optional, for better logging
