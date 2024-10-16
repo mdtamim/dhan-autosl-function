@@ -40,3 +40,7 @@ def get_total_stock_qty(stock_data):
 
 def get_sl_details(stock_symbol,security_id, sl_price, stock_qty):
     return {'stock_symbol': stock_symbol, 'stoploss_price': sl_price, 'quantity': math.ceil(stock_qty), 'security_id': security_id}
+
+
+def adjust_to_tickr_size(stoploss_price):
+    return round(round(stoploss_price / 0.05) * 0.05, 2)

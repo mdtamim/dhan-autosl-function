@@ -2,6 +2,7 @@ import time
 import requests
 
 from config.dhan_init import headers,url
+from utils.helpers import adjust_to_tickr_size
 
 def fetch_positions_and_holdings(dhan):
     """Fetch all positions and holdings from Dhan and group by stock."""
@@ -70,7 +71,7 @@ def place_stoploss_orders(dhan, stoploss_details):
     for detail in stoploss_details:
         stoploss_price = detail['stoploss_price']
         quantity = detail['quantity']
-        trigger_price = round(round(stoploss_price * 1.005/ 0.05) * 0.05, 2)  # Trigger price is 1% above stoploss price
+        trigger_price = adjust_to_tickr_size(stoploss_price * 1.0025) # Trigger price is 0.25% more than Stoploss
         # Place order using Dhan API
         dhan.place_order(
             transaction_type=dhan.SELL,

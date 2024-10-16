@@ -1,7 +1,7 @@
 from dhanhq import dhanhq
 
-client_id = '1000700713'
-client_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJkaGFuIiwicGFydG5lcklkIjoiIiwiZXhwIjoxNzMwNzMzMTY2LCJ0b2tlbkNvbnN1bWVyVHlwZSI6IlNFTEYiLCJ3ZWJob29rVXJsIjoiIiwiZGhhbkNsaWVudElkIjoiMTAwMDcwMDcxMyJ9.lwYD1BC_sadcqPZJgMXGVfwxhuG9jvz9buTn02RkK0dXxUUtbWeTDE2bMjpAeMtPIRSwi8P2jFpmbMas9GmpYw'
+client_id = 'XXX'
+client_token = 'XXX'
 
 def init_dhan():
     # Initialize Dhan SDK
