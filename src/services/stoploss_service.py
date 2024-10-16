@@ -1,6 +1,6 @@
 from services.dhan_services import fetch_positions_and_holdings, cancel_pending_orders,get_market_feed,place_stoploss_orders
 from utils.helpers import adjust_to_tickr_size, calculate_average_buy_price, get_security_id,get_total_stock_qty, get_sl_details
-from services.firebase_services import fetch_stock_details_from_db, update_stock_in_db, delete_stock_from_db
+from services.firebase_services import get_blocklist_stocks, fetch_stock_details_from_db, update_stock_in_db, delete_stock_from_db
 
 def process_stoploss_placement(dhan, db):
     grouped_data = fetch_positions_and_holdings(dhan)
@@ -8,8 +8,12 @@ def process_stoploss_placement(dhan, db):
     #TODO : Instead of cancelling,look into modifying order elegantly
     cancel_pending_orders(dhan)
     ltp_map = get_market_feed(grouped_data)
-
+    blocklist = get_blocklist_stocks(db)
     for stock_symbol, stock_data in grouped_data.items():
+        if stock_symbol in blocklist: # If stock is present in blocklist,no operation should be preformed in the stock
+            print(f"Stock '{stock_symbol}' is in block list.No operation will be performed")
+            continue
+
         average_buy_price = calculate_average_buy_price({stock_symbol: stock_data})
         security_id = get_security_id(stock_data)
         current_price = ltp_map[security_id]

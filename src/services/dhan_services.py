@@ -29,7 +29,7 @@ def cancel_pending_orders(dhan):
         if order['orderStatus'] in ['REJECTED','CANCELLED','EXPIRED','TRADED']:
             continue
         dhan.cancel_order(order['orderId'])
-    time.sleep(3)
+    time.sleep(5)
 
 
 def get_market_feed(grouped_data):

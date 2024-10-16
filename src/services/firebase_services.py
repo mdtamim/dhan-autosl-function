@@ -18,3 +18,18 @@ def update_stock_in_db(db, stock_symbol, data):
 def delete_stock_from_db(db, stock_symbol):
     doc_ref = db.collection('stocks').document(stock_symbol)
     doc_ref.delete()
+
+
+def get_blocklist_stocks(db):
+    # Reference to the blocklist collection in Firestore
+    blocklist_ref = db.collection('stock_blocklist')
+    blocklist_stocks = []
+
+    # Fetch all documents in the blocklist collection
+    docs = blocklist_ref.stream()
+
+    for doc in docs:
+        # Assuming the document ID is the stock symbol
+        blocklist_stocks.append(doc.id)
+
+    return blocklist_stocks
