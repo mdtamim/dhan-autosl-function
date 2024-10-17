@@ -15,3 +15,5 @@ typing-extensions  # To support typing improvements (optional, based on Python v
 
 # Logging libraries (optional)
 loguru # Optional, for better logging
+
+google.cloud
