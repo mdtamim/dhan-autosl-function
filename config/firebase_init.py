@@ -14,7 +14,10 @@ def init_firebase():
 
     # Initialize Firebase Admin SDK
     cred = credentials.Certificate(cred_dict)
+    # When cloud function is invoked,in first call app is initialized.When in another call
+    # main method is called,app should not be initialized if its already initialized in previous calls
+    if not firebase_admin._apps:
+        firebase_admin.initialize_app(cred)
 
-    firebase_admin.initialize_app(cred)
     db = firestore.client()
     return db
