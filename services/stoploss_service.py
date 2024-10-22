@@ -19,20 +19,25 @@ def process_stoploss_placement(dhan, db):
         current_price = ltp_map[security_id]
         current_gain_percent = round(((current_price - average_buy_price) / average_buy_price) * 100, 2)
         total_qty_dhan = get_total_stock_qty(stock_data)
-        stock_details = fetch_stock_details_from_db(db, stock_symbol)
 
-        if (stock_details and  stock_details['Average_Buy_Price'] == average_buy_price and
-              total_qty_dhan <= sum(detail['quantity'] for detail in stock_details['Stoploss_Details'])):
-            # Cancel existing pending orders
-            #cancel_existing_orders(existing_orders, stock_symbol)
-
-            treat_as_existing_stock(db, dhan, average_buy_price, current_gain_percent, current_price, stock_details, stock_symbol, total_qty_dhan)
+        if total_qty_dhan == 0:
+            delete_stock_from_db(db, stock_symbol)
 
         else:
-            max_gain_percent = current_gain_percent if current_gain_percent > 0 else 0
-            # Cancel existing pending orders
-            #cancel_existing_orders(existing_orders, stock_symbol)
-            treat_as_new_stock(db, dhan, average_buy_price, current_price, max_gain_percent, security_id, stock_symbol, total_qty_dhan)
+            stock_details = fetch_stock_details_from_db(db, stock_symbol)
+
+            if (stock_details and stock_details['Average_Buy_Price'] == average_buy_price and
+                  total_qty_dhan <= sum(detail['quantity'] for detail in stock_details['Stoploss_Details'])):
+                # Cancel existing pending orders
+                #cancel_existing_orders(existing_orders, stock_symbol)
+
+                treat_as_existing_stock(db, dhan, average_buy_price, current_gain_percent, current_price, stock_details, stock_symbol, total_qty_dhan)
+
+            else:
+                max_gain_percent = current_gain_percent if current_gain_percent > 0 else 0
+                # Cancel existing pending orders
+                #cancel_existing_orders(existing_orders, stock_symbol)
+                treat_as_new_stock(db, dhan, average_buy_price, current_price, max_gain_percent, security_id, stock_symbol, total_qty_dhan)
 
 
 def treat_as_new_stock(db, dhan, average_buy_price, current_price, max_gain_percent, security_id, stock_symbol, total_qty_dhan):
@@ -105,7 +110,7 @@ def treat_as_existing_stock(db, dhan, average_buy_price, current_gain_percent, c
         if total_qty_dhan == 0:
             break
         #If quantity mentioned in db for a sl is more than total quantity,it indicates some stocks have been sold.In such case update the stock
-        #in db to same as present in dhan
+        #In db to same as present in dhan
         if details['quantity'] > total_qty_dhan:
             details['quantity'] = total_qty_dhan
 
