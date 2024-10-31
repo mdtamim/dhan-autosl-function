@@ -10,8 +10,9 @@ def process_stoploss_placement(dhan, db):
     ltp_map = get_market_feed(grouped_data)
     blocklist = get_blocklist_stocks(db)
     for stock_symbol, stock_data in grouped_data.items():
+        print(f"############################## Processing stock '{stock_symbol}' ##############################")
         if stock_symbol in blocklist: # If stock is present in blocklist,no operation should be preformed in the stock
-            print(f"Stock '{stock_symbol}' is in block list.No operation will be performed")
+            print("Stock is in block list.No operation will be performed")
             continue
 
         average_buy_price = calculate_average_buy_price({stock_symbol: stock_data})
@@ -30,11 +31,13 @@ def process_stoploss_placement(dhan, db):
                   total_qty_dhan <= sum(detail['quantity'] for detail in stock_details['Stoploss_Details'])):
                 # Cancel existing pending orders
                 #cancel_existing_orders(existing_orders, stock_symbol)
-
+                print("Treating as existing stock as Average price is same and no new stocks were bought in Dhan")
                 treat_as_existing_stock(db, dhan, average_buy_price, current_gain_percent, current_price, stock_details, stock_symbol, total_qty_dhan)
 
             else:
+                print("Treating as fresh stock as Average buy price has changed indicating some fresh stocks were brought")
                 max_gain_percent = current_gain_percent if current_gain_percent > 0 else 0
+                print(f"Current Gain Percent is '{current_gain_percent}',setting Max Gain Percent to '{max_gain_percent}'")
                 # Cancel existing pending orders
                 #cancel_existing_orders(existing_orders, stock_symbol)
                 treat_as_new_stock(db, dhan, average_buy_price, current_price, max_gain_percent, security_id, stock_symbol, total_qty_dhan)
@@ -115,14 +118,18 @@ def treat_as_existing_stock(db, dhan, average_buy_price, current_gain_percent, c
             details['quantity'] = total_qty_dhan
 
         total_qty_dhan -= details['quantity']
+        print(f"Total Quantity is '{total_qty_dhan}' and existing stoploss fetched from DB is '{details['stoploss_price']}'")
 
         if current_gain_percent > max_gain_percent:
-            max_gain_percent = current_gain_percent
+            print(f"Current Gain '{current_gain_percent}' is greater than Previous Max gain '{max_gain_percent}' found from DB")
             details['stoploss_price'] = round(round(details['stoploss_price'] * (
                     1 + (current_gain_percent - max_gain_percent) / 100) / 0.05) * 0.05, 2)
+            print(f"Resetting stoploss to '{details['stoploss_price']}'")
+            max_gain_percent = current_gain_percent
 
         else:
             details['stoploss_price'] = round(round(min(details['stoploss_price'], current_price) / 0.05) * 0.05, 2)
+            print("Previous Max Gain from DB is still more than current gain from Dhan.Keeping Stoploss as it is")
 
     place_stoploss_orders(dhan, stoploss_details)
     update_stock_in_db(db, stock_symbol,

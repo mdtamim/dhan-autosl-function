@@ -16,6 +16,7 @@ def update_stock_in_db(db, stock_symbol, data):
 
 # Function to delete stock details from Firebase
 def delete_stock_from_db(db, stock_symbol):
+    print(f"Total quantity for the Stock in Dhan is 0. Deleting it from database")
     doc_ref = db.collection('stocks').document(stock_symbol)
     doc_ref.delete()
 
