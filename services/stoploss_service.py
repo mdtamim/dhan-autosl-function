@@ -47,9 +47,11 @@ def treat_as_new_stock(db, dhan, average_buy_price, current_price, max_gain_perc
     delete_stock_from_db(db, stock_symbol)
     max_gain_price = round(average_buy_price * (1 + max_gain_percent / 100), 2)
     stoploss_details = []
+    total_invested_amt = total_qty_dhan * average_buy_price
+    print(f"Max gain Percent is '{max_gain_percent}' and total invested amount is '{total_invested_amt}'")
 
     if max_gain_percent <= 5:
-        if total_qty_dhan * average_buy_price >= 150000:
+        if total_invested_amt >= 150000:
             sl_40 = adjust_to_tickr_size(min(max_gain_price * 0.96, current_price))
             stoploss_details.append(get_sl_details(stock_symbol, security_id, sl_40, 0.4 * total_qty_dhan))
 
@@ -61,7 +63,7 @@ def treat_as_new_stock(db, dhan, average_buy_price, current_price, max_gain_perc
             stoploss_details.append(get_sl_details(stock_symbol, security_id, sl, total_qty_dhan))
 
     elif 18 >= max_gain_percent > 5:
-        if total_qty_dhan * average_buy_price >= 220000:
+        if total_invested_amt >= 220000:
             sl_40 = adjust_to_tickr_size(min(max_gain_price * 0.96, current_price))
             stoploss_details.append(get_sl_details(stock_symbol, security_id, sl_40, 0.4 * total_qty_dhan))
 
@@ -72,7 +74,7 @@ def treat_as_new_stock(db, dhan, average_buy_price, current_price, max_gain_perc
             stoploss_details.append(get_sl_details(stock_symbol, security_id, sl, total_qty_dhan))
 
     else:
-        if total_qty_dhan * average_buy_price >= 220000:
+        if total_invested_amt >= 220000:
             sl_25 = adjust_to_tickr_size(min(max_gain_price * 0.97, current_price))
             stoploss_details.append(get_sl_details(stock_symbol, security_id, sl_25, 0.25 * total_qty_dhan))
 
@@ -84,7 +86,7 @@ def treat_as_new_stock(db, dhan, average_buy_price, current_price, max_gain_perc
                                                    total_qty_dhan - stoploss_details[0]['quantity'] -
                                                    stoploss_details[1]['quantity']))
 
-        elif total_qty_dhan * average_buy_price >= 170000:
+        elif total_invested_amt >= 170000:
             sl_35 = adjust_to_tickr_size(min(max_gain_price * 0.95, current_price))
             stoploss_details.append(get_sl_details(stock_symbol, security_id, sl_35, 0.35 * total_qty_dhan))
 

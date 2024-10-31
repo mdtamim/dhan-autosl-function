@@ -12,6 +12,7 @@ def fetch_stock_details_from_db(db, stock_symbol):
 def update_stock_in_db(db, stock_symbol, data):
     doc_ref = db.collection('stocks').document(stock_symbol)
     doc_ref.set(data)
+    print(f"Storing Data in DB '{data}'")
 
 
 # Function to delete stock details from Firebase
