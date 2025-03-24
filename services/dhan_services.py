@@ -9,6 +9,9 @@ def fetch_positions_and_holdings(dhan):
     positions = dhan.get_positions().get('data', [])
     holdings = dhan.get_holdings().get('data', [])
 
+    print("Positions:", positions)
+    print("Holdings:", holdings)
+    
     print("Type of positions:", type(positions))
     print("Type of holdings:", type(holdings))
 
