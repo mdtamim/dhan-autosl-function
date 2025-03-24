@@ -12,9 +12,11 @@ def fetch_positions_and_holdings(dhan):
     print("Type of positions:", type(positions))
     print("Type of holdings:", type(holdings))
 
+    all_stocks = {**positions, **holdings}
+    
     grouped_data = {}
 
-    for item in positions + holdings:
+    for item in all_stocks.values():
         trading_symbol = item['tradingSymbol']
         if trading_symbol not in grouped_data:
             grouped_data[trading_symbol] = {'positions': [], 'holdings': []}
