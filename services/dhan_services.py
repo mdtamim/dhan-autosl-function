@@ -8,18 +8,10 @@ def fetch_positions_and_holdings(dhan):
     """Fetch all positions and holdings from Dhan and group by stock."""
     positions = dhan.get_positions().get('data', [])
     holdings = dhan.get_holdings().get('data', [])
-
-    print("Positions:", positions)
-    print("Holdings:", holdings)
-    
-    print("Type of positions:", type(positions))
-    print("Type of holdings:", type(holdings))
-
-    all_stocks = {**positions, **holdings}
     
     grouped_data = {}
 
-    for item in all_stocks.values():
+    for item in positions + holdings:
         trading_symbol = item['tradingSymbol']
         if trading_symbol not in grouped_data:
             grouped_data[trading_symbol] = {'positions': [], 'holdings': []}
