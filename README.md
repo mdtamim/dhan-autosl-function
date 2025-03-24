@@ -5,11 +5,13 @@ The code will be deployed to GCP as a  google cloud function.Cloud function need
 
 # Deploying code in GCP
 
-### Login to CLI 
+### Login to CLI
 
 ### Clone git repo using command :
+#### PAT (Account Setting -> Setting -> Developer Setting > Fine grained Token -> token -> Regenerate token)
 #### git clone https://github.com/mdtamim/dhan-autosl-function.git
-#### pass github user name and PAT (Account -> Setting -> Developer Setting > Token)
+#### Pass github user name and regenerated PAT
+
 
 ### Retrigger deployment with below command
 #### Go inside root directory of github repo :
