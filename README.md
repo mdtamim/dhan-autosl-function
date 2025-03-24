@@ -18,6 +18,9 @@ The code will be deployed to GCP as a  google cloud function.Cloud function need
 ### Redeploy cloud function :
 gcloud functions deploy dhan-auto-sl     --runtime python311     --trigger-http     --allow-unauthenticated     --entry-point main     --region asia-south1     --source .
 
+# Test if deployment was successful : 
+#### Calling the cloud function : https://asia-south1-dhan-algo.cloudfunctions.net/dhan-auto-sl
+#### The get API should return "Task completed successfully" in the browser 
 
 # Todos
 Fix allow unauthenticated 
