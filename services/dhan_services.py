@@ -10,7 +10,7 @@ def fetch_positions_and_holdings(dhan):
     holdings = dhan.get_holdings().get('data', [])
 
     print("Type of positions:", type(positions))
-	print("Type of holdings:", type(holdings))
+    print("Type of holdings:", type(holdings))
 
     grouped_data = {}
 
